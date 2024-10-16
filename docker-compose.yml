@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./server
+    container_name: cooper-films-server
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./server:/usr/src/server:rw
+      - /usr/src/server/node_modules
+
