@@ -1,0 +1,11 @@
+export enum ScriptStatus {
+  AWAITING_ANALYSIS = 1,
+  IN_ANALYSIS = 2,
+  AWAITING_REVIEW = 3,
+  IN_REVIEW = 4,
+  AWAITING_APPROVAL = 5,
+  IN_APPROVAL = 6,
+  APPROVED = 7,
+  REJECTED = 8,
+  ERROR = -1
+}
