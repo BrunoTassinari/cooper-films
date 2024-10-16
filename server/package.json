@@ -6,6 +6,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsx watch --env-file .env src/server.ts"
   },
+  "prisma": {
+    "schema": "src/db/prisma/schema.prisma",
+    "seed": "tsx src/db/prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -13,10 +17,16 @@
   "devDependencies": {
     "@biomejs/biome": "1.9.3",
     "@types/node": "^22.5.4",
+    "prisma": "^5.21.0",
     "tsx": "^4.19.0",
     "typescript": "^5.6.2"
   },
   "dependencies": {
+    "@paralleldrive/cuid2": "^2.2.2",
+    "@prisma/client": "^5.21.0",
     "express": "^4.21.0"
+  },
+  "@snaplet/seed": {
+    "config": "prisma/seed/seed.config.ts"
   }
 }
