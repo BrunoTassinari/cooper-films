@@ -27,6 +27,7 @@ model User {
 
 model Script {
   id            String   @id @default(cuid())
+  title         String
   content       String
   status        String
   contact_name  String

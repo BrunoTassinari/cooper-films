@@ -14,6 +14,7 @@ CREATE TABLE "users" (
 -- CreateTable
 CREATE TABLE "scripts" (
     "id" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "status" TEXT NOT NULL,
     "contact_name" TEXT NOT NULL,
