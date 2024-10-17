@@ -1,8 +1,8 @@
-import { Script } from '../../../domain/entities/script';
-import type { ScriptRepository } from '../../../domain/repositories/script-repository';
+import { Script } from '../../domain/entities/script';
+import type { ScriptRepository } from '../../domain/repositories/script-repository';
 
 export class CreateScriptUseCase {
-  constructor(private readonly scriptRepository: ScriptRepository) {}
+  constructor(private readonly repository: ScriptRepository) {}
 
   async execute({
     content,
@@ -15,8 +15,6 @@ export class CreateScriptUseCase {
     contact_email: string;
     contact_phone: string;
   }): Promise<Script> {
-
-
     const script = new Script(
       content,
       contact_name,
@@ -24,7 +22,7 @@ export class CreateScriptUseCase {
       contact_phone
     );
 
-    const response = await this.scriptRepository.create(script);
+    const response = await this.repository.create(script);
 
     return response;
   }

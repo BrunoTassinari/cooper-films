@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import z from 'zod';
-import { useCase } from '../../../useCases/script/createScript';
+import { createUseCase } from '../../../useCases/script';
+import { tryCatch } from '../../../lib/try-catch-handler';
 
 const CreateScriptSchema = z.object({
   content: z.string(),
@@ -12,12 +13,13 @@ const CreateScriptSchema = z.object({
 
 const app = Router();
 
-app.post('', async (req: Request, res: Response) => {
-  try {
+app.post(
+  '',
+  tryCatch(async (req: Request, res: Response) => {
     const { content, contact_name, contact_email, contact_phone } =
       CreateScriptSchema.parse(req.body);
 
-    const response = await useCase.execute({
+    const response = await createUseCase.execute({
       content,
       contact_name,
       contact_email,
@@ -25,10 +27,7 @@ app.post('', async (req: Request, res: Response) => {
     });
 
     res.status(201).json(response);
-  } catch (error: any) {
-    console.error(error);
-    res.status(500).send(error.message);
-  }
-});
+  })
+);
 
 export { app as createScriptRoute };

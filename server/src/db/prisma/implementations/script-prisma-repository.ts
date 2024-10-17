@@ -22,4 +22,18 @@ export class ScriptPrismaRepository implements ScriptRepository {
 
     return response;
   }
+
+  find(name: string, email: string, phone: string): Promise<Script | null> {
+    const response = this.prisma.script.findMany({
+      where: {
+        OR: [
+          { contact_name: name },
+          { contact_email: email },
+          { contact_phone: phone },
+        ],
+      },
+    });
+
+    return response;
+  }
 }
