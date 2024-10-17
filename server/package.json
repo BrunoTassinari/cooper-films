@@ -16,6 +16,7 @@
   "description": "",
   "devDependencies": {
     "@biomejs/biome": "1.9.3",
+    "@types/express": "^5.0.0",
     "@types/node": "^22.5.4",
     "prisma": "^5.21.0",
     "tsx": "^4.19.0",
@@ -24,7 +25,8 @@
   "dependencies": {
     "@paralleldrive/cuid2": "^2.2.2",
     "@prisma/client": "^5.21.0",
-    "express": "^4.21.0"
+    "express": "^4.21.1",
+    "zod": "^3.23.8"
   },
   "@snaplet/seed": {
     "config": "prisma/seed/seed.config.ts"

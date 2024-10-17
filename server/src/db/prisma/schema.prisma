@@ -21,16 +21,19 @@ model User {
   role       String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
+  @@map("users")
 }
 
 model Script {
   id            String   @id @default(cuid())
-  name          String
   content       String
-  status        Int
+  status        String
   contact_name  String
   contact_email String
   contact_phone String
   created_at    DateTime @default(now())
   updated_at    DateTime @updatedAt
+
+  @@map("scripts")
 }
