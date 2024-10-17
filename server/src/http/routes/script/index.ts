@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import { createScriptRoute } from './create';
-import { findScriptByIdRoute } from './find-script-status';
+import { findScriptRoute } from './find';
 
 const app = Router();
 
 app.use(createScriptRoute);
-app.use(findScriptByIdRoute);
+app.use(findScriptRoute);
 
 app.use('/script', app);
 

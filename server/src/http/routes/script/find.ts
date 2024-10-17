@@ -20,4 +20,4 @@ app.get(
   })
 );
 
-export { app as findScriptByIdRoute };
+export { app as findScriptRoute };
