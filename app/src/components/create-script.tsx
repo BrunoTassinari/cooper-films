@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./ui/input";
 import { TextArea } from "./ui/text-area";
 import ReactInputMask from "react-input-mask";
-import { createScript } from "@/app/api/scripts/create-script";
+import { createScript } from "@/app/api/create-script";
 
 const createScriptFormSchema = z.object({
   contact_name: z.string().min(1, { message: "Nome é obrigatório" }),
@@ -38,15 +38,7 @@ export default function CreateScriptForm() {
   }
 
   return (
-    <div className="h-full w-full flex flex-col gap-6 p-8 rounded-lg border-2 border-slate-100">
-      <div className="flex flex-col gap-3">
-        <div className="flex items-center justify-between">
-          <span className="font-bold text-lg tracking-tight leading-normal text-slate-600">
-            Envie seu roteiro!
-          </span>
-        </div>
-      </div>
-
+    <div className="h-full w-full flex flex-col gap-6 p-8 rounded-lg">
       <form
         onSubmit={handleSubmit(handleCreateScript)}
         className="flex-1 flex flex-col justify-between"

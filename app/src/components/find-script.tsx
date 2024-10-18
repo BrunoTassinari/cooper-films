@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./ui/input";
 import ReactInputMask from "react-input-mask";
 import { Button } from "./ui/button";
-import { findScript } from "@/app/api/scripts/find-script";
+import { findScript } from "@/app/api/find-script";
 import type { Script } from "@/types/script";
 
 type FindScriptFormProps = {
@@ -49,46 +49,44 @@ export default function FindScriptForm({ setScripts }: FindScriptFormProps) {
 
   return (
     <div className="w-full flex flex-col gap-6 p-4 rounded-lg">
-      <div className="flex flex-col gap-3">
-        <form
-          onSubmit={handleSubmit(handleSearchScript)}
-          className="flex-1 flex flex-col"
-        >
-          <div className="flex justify-center gap-4">
-            <div className="flex flex-col">
-              <Label htmlFor="name">Seu nome</Label>
-              <Input
-                id="name"
-                placeholder="Insira seu nome"
-                {...register("contact_name")}
-              />
-            </div>{" "}
-            <div className="flex flex-col">
-              <Label htmlFor="email">Seu e-mail</Label>
-              <Input
-                id="email"
-                placeholder="Insira seu e-mail"
-                {...register("contact_email")}
-              />
-            </div>{" "}
-            <div className="flex flex-col ">
-              <Label htmlFor="phone">Telefone</Label>
-              <ReactInputMask
-                id="phone"
-                className="phone-input"
-                placeholder="Insira seu telefone com DDD"
-                mask={"(99) 99999-9999"}
-                {...register("contact_phone")}
-              />
-            </div>{" "}
-            <div className="flex items-center gap-3 mt-5">
-              <Button size="sm" className="flex-1" disabled={!isValid}>
-                Pesquisar
-              </Button>
-            </div>
+      <form
+        onSubmit={handleSubmit(handleSearchScript)}
+        className="flex-1 flex flex-col"
+      >
+        <div className="flex justify-center gap-4">
+          <div className="flex flex-col">
+            <Label htmlFor="name">Seu nome</Label>
+            <Input
+              id="name"
+              placeholder="Insira seu nome"
+              {...register("contact_name")}
+            />
+          </div>{" "}
+          <div className="flex flex-col">
+            <Label htmlFor="email">Seu e-mail</Label>
+            <Input
+              id="email"
+              placeholder="Insira seu e-mail"
+              {...register("contact_email")}
+            />
+          </div>{" "}
+          <div className="flex flex-col ">
+            <Label htmlFor="phone">Telefone</Label>
+            <ReactInputMask
+              id="phone"
+              className="phone-input"
+              placeholder="Insira seu telefone com DDD"
+              mask={"(99) 99999-9999"}
+              {...register("contact_phone")}
+            />
+          </div>{" "}
+          <div className="flex items-center gap-3 mt-5">
+            <Button size="sm" className="flex-1" disabled={!isValid}>
+              Pesquisar
+            </Button>
           </div>
-        </form>
-      </div>
+        </div>
+      </form>
     </div>
   );
 }

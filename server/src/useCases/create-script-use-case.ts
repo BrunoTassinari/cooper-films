@@ -1,5 +1,5 @@
-import { Script } from '../../domain/entities/script';
-import type { ScriptRepository } from '../../domain/repositories/script-repository';
+import { Script } from '../domain/entities/script';
+import type { ScriptRepository } from '../domain/repositories/script-repository';
 
 type CreateScriptBody = {
   title: string;

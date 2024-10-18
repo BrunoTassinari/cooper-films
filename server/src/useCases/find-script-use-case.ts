@@ -1,5 +1,5 @@
-import type { Script } from '../../domain/entities/script';
-import type { ScriptRepository } from '../../domain/repositories/script-repository';
+import type { Script } from '../domain/entities/script';
+import type { ScriptRepository } from '../domain/repositories/script-repository';
 
 export class FindScriptUseCase {
   constructor(private repository: ScriptRepository) {}
@@ -8,7 +8,7 @@ export class FindScriptUseCase {
     name: string,
     email: string,
     phone: string
-  ): Promise<Script | null> {
+  ): Promise<Script[] | null> {
     if (name === '' && email === '' && phone === '')
       throw new Error('Invalid contact information');
 

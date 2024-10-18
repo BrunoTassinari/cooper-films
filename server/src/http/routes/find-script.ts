@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
-import { tryCatch } from '../../../lib/try-catch-handler';
-import { findByIdUseCase } from '../../../useCases/script';
+import { tryCatch } from '../../lib/try-catch-handler';
+import { findScriptUseCase } from '../../useCases';
 
-const app = Router();
+const router = Router();
 
-app.get(
+router.get(
   '/',
   tryCatch(async (req: Request, res: Response) => {
     const { contact_name, contact_email, contact_phone } = req.query;
@@ -14,10 +14,10 @@ app.get(
     const email = (contact_email as string) || '';
     const phone = (contact_phone as string) || '';
 
-    const response = await findByIdUseCase.execute(name, email, phone);
+    const response = await findScriptUseCase.execute(name, email, phone);
 
     res.status(200).json(response);
   })
 );
 
-export { app as findScriptRoute };
+export { router as findScriptRoute };
