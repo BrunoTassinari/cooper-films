@@ -6,5 +6,5 @@ export interface ScriptRepository {
     contact_name: string,
     contact_email: string,
     contact_phone: string
-  ): Promise<Script | null>;
+  ): Promise<Script[] | null>;
 }

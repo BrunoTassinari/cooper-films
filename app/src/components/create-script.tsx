@@ -12,10 +12,7 @@ import ReactInputMask from "react-input-mask";
 import { createScript } from "@/app/api/scripts/create-script";
 
 const createScriptFormSchema = z.object({
-  contact_name: z
-    .string()
-    .min(1, { message: "Nome é obrigatório" })
-    .min(3, { message: "Nome deve ter no mínimo 3 caracteres" }),
+  contact_name: z.string().min(1, { message: "Nome é obrigatório" }),
   contact_email: z.string().email({ message: "E-mail inválido" }),
   contact_phone: z.string().min(10, { message: "Telefone inválido" }),
   title: z.string().min(1, { message: "Titulo é obrigatório" }),
@@ -94,7 +91,6 @@ export default function CreateScriptForm() {
                 className="phone-input"
                 placeholder="Insira seu telefone com DDD"
                 mask={"(99) 99999-9999"}
-                maskChar={null}
                 {...register("contact_phone")}
               />
 
@@ -113,7 +109,6 @@ export default function CreateScriptForm() {
               <Label htmlFor="title">Titulo</Label>
               <Input
                 id="title"
-                autoFocus
                 placeholder="Insira o titulo do roteiro"
                 {...register("title")}
               />
@@ -128,7 +123,6 @@ export default function CreateScriptForm() {
               <Label htmlFor="content">Conteudo do roteiro</Label>
               <TextArea
                 id="content"
-                autoFocus
                 placeholder="Insira o conteudo do roteiro"
                 {...register("content")}
               />
