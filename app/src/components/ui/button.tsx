@@ -10,6 +10,7 @@ const button = tv({
         "bg-slate-800 text-slate-50 hover:bg-slate-900 ring-bg-slate-800 disabled:bg-slate-400 disabled:text-slate-200",
       secondary:
         "bg-slate-50 text-slate-800 hover:bg-slate-100 ring-slate-800 border border-slate-400",
+      ghost: "bg-transparent text-slate-800 hover:bg-slate-100 ring-slate-800",
     },
 
     size: {

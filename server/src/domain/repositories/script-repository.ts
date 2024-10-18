@@ -7,4 +7,7 @@ export interface ScriptRepository {
     contact_email: string,
     contact_phone: string
   ): Promise<Script[] | null>;
+
+  list(status: string[]): Promise<Script[]>;
+  findOne(id: string): Promise<Script | null>;
 }

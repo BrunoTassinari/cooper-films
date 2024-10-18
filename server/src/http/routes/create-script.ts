@@ -15,7 +15,7 @@ const CreateScriptSchema = z.object({
 const router = Router();
 
 router.post(
-  '',
+  '/script',
   tryCatch(async (req: Request, res: Response) => {
     const body = CreateScriptSchema.parse(req.body);
 

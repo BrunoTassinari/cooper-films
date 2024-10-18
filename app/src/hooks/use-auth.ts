@@ -1,11 +1,20 @@
 'use client';
 
+import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+
+type jwtDecoded = {
+  validUser: {
+    role: string;
+  };
+};
 
 export const useAuth = () => {
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
+  const [role, setRole] = useState('');
+
   const router = useRouter();
 
   useEffect(() => {
@@ -14,11 +23,14 @@ export const useAuth = () => {
     if (!token) {
       router.push('/login');
     } else {
+      const decodedToken = jwtDecode<jwtDecoded>(token);
+
+      setRole(decodedToken.validUser.role);
       setAuthenticated(true);
     }
 
     setLoading(false);
   }, [router]);
 
-  return { loading, authenticated };
+  return { loading, authenticated, role };
 };

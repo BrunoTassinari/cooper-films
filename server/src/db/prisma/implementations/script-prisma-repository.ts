@@ -9,6 +9,28 @@ export class ScriptPrismaRepository implements ScriptRepository {
     this.prisma = new PrismaClient();
   }
 
+  findOne(id: string): Promise<Script | null> {
+    const response = this.prisma.script.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    return response;
+  }
+
+  list(status: string[]): Promise<Script[]> {
+    const response = this.prisma.script.findMany({
+      where: {
+        status: {
+          in: status,
+        },
+      },
+    });
+
+    return response;
+  }
+
   async create(script: Script): Promise<Script> {
     const response = await this.prisma.script.create({
       data: {

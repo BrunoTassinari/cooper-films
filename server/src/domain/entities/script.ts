@@ -1,6 +1,7 @@
 import { ScriptStatus } from '../enums/script-status';
 
 export class Script {
+  public id: string;
   public title: string;
   public content: string;
   public status: string;
@@ -15,6 +16,7 @@ export class Script {
     contact_email: string,
     contact_phone: string
   ) {
+    this.id = '';
     this.title = title;
     this.content = content;
     this.status = ScriptStatus.AWAITING_ANALYSIS as string;
