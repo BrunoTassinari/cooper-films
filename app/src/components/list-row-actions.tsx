@@ -10,9 +10,11 @@ import { useAuth } from "@/hooks/use-auth";
 import { createUserScript } from "@/app/api/create-user-script";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/navigation";
 
 export default function ListRowActions({ id }: { id: string }) {
   const { userId, role } = useAuth();
+  const router = useRouter();
 
   async function handleAssumeScript() {
     try {
@@ -22,7 +24,7 @@ export default function ListRowActions({ id }: { id: string }) {
         role,
       });
 
-      toast.success("Script assumido com sucesso!");
+      toast.success("Script assumido com sucesso! Redirecionando...");
     } catch (error) {
     } finally {
       setInterval(() => {
@@ -41,6 +43,12 @@ export default function ListRowActions({ id }: { id: string }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => router.push(`/scripts/details/${id}`)}
+        >
+          Visualizar roteiro
+        </DropdownMenuItem>
         <DropdownMenuItem
           className="cursor-pointer"
           onClick={handleAssumeScript}

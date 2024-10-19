@@ -70,7 +70,6 @@ export default function DetailScriptPage({ params }: DetailScriptPageProps) {
           </div>
         </div>
       </div>
-      <ButtonActions role={role} item={item} />
     </div>
   );
 }

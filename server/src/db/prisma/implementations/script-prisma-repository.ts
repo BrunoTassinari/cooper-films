@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 import type { ScriptRepository } from '../../../domain/repositories/script-repository';
 import type { Script } from '../../../domain/entities/script';
+import type { ScriptStatus } from '../../../domain/enums/script-status';
 
 export class ScriptPrismaRepository implements ScriptRepository {
   private prisma: PrismaClient;
@@ -27,7 +28,12 @@ export class ScriptPrismaRepository implements ScriptRepository {
       },
     });
 
-    return response;
+    if (!response) return null;
+
+    return {
+      ...response,
+      status: response.status as ScriptStatus,
+    };
   }
 
   async list(): Promise<Script[]> {
@@ -40,7 +46,10 @@ export class ScriptPrismaRepository implements ScriptRepository {
       },
     });
 
-    return response;
+    return response.map((script) => ({
+      ...script,
+      status: script.status as ScriptStatus,
+    }));
   }
 
   async create(script: Script): Promise<Script> {
@@ -55,7 +64,10 @@ export class ScriptPrismaRepository implements ScriptRepository {
       },
     });
 
-    return response;
+    return {
+      ...response,
+      status: response.status as ScriptStatus,
+    };
   }
 
   async find(
@@ -73,6 +85,11 @@ export class ScriptPrismaRepository implements ScriptRepository {
       },
     });
 
-    return response;
+    if (!response) return null;
+
+    return response.map((script) => ({
+      ...script,
+      status: script.status as ScriptStatus,
+    }));
   }
 }
