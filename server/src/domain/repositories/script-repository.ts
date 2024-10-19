@@ -8,6 +8,7 @@ export interface ScriptRepository {
     contact_phone: string
   ): Promise<Script[] | null>;
 
-  list(status: string[]): Promise<Script[]>;
+  list(): Promise<Script[]>;
   findOne(id: string): Promise<Script | null>;
+  assume(id: string): void;
 }

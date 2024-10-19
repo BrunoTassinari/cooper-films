@@ -28,7 +28,6 @@ export default function CreateScriptForm() {
     });
 
   async function handleCreateScript(data: createScriptForm) {
-    console.log(data);
     try {
       await createScript(data);
       reset();

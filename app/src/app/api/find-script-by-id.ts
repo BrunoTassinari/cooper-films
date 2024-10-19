@@ -15,6 +15,11 @@ export const findScriptById = async (id: string) => {
     },
   });
 
+  if (response.status === 401) {
+    localStorage.removeItem('authToken');
+    window.location.reload();
+  }
+
   if (!response.ok) {
     throw new Error('Failed to find script');
   }

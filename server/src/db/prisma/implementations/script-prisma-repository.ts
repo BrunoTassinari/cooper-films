@@ -9,8 +9,19 @@ export class ScriptPrismaRepository implements ScriptRepository {
     this.prisma = new PrismaClient();
   }
 
-  findOne(id: string): Promise<Script | null> {
-    const response = this.prisma.script.findUnique({
+  async assume(id: string): Promise<void> {
+    await this.prisma.script.update({
+      where: {
+        id,
+      },
+      data: {
+        is_assumed: true,
+      },
+    });
+  }
+
+  async findOne(id: string): Promise<Script | null> {
+    const response = await this.prisma.script.findUnique({
       where: {
         id,
       },
@@ -19,12 +30,13 @@ export class ScriptPrismaRepository implements ScriptRepository {
     return response;
   }
 
-  list(status: string[]): Promise<Script[]> {
-    const response = this.prisma.script.findMany({
+  async list(): Promise<Script[]> {
+    const response = await this.prisma.script.findMany({
       where: {
-        status: {
-          in: status,
-        },
+        is_assumed: false,
+      },
+      orderBy: {
+        created_at: 'asc',
       },
     });
 

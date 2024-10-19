@@ -2,11 +2,8 @@
 
 import Link from "next/link";
 import { FileSearch, FileCheck, FilePlus2, FileUser } from "lucide-react";
-import { useAuth } from "@/hooks/use-auth";
 
 export default function Footer() {
-  const { authenticated } = useAuth();
-
   return (
     <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
       <Link
@@ -26,14 +23,14 @@ export default function Footer() {
       </Link>
 
       <Link
-        href={authenticated ? "/scripts/list" : "/login"}
+        href={"/scripts/list"}
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"
       >
         <FileCheck size={16} />
         Roteiros 🔒
       </Link>
       <Link
-        href={authenticated ? "/scripts/me" : "/login"}
+        href={"/scripts/me"}
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"
       >
         <FileUser size={16} />

@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 type jwtDecoded = {
   validUser: {
+    id: string;
     role: string;
   };
 };
@@ -13,6 +14,7 @@ type jwtDecoded = {
 export const useAuth = () => {
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
+  const [userId, setUserId] = useState('');
   const [role, setRole] = useState('');
 
   const router = useRouter();
@@ -26,11 +28,13 @@ export const useAuth = () => {
       const decodedToken = jwtDecode<jwtDecoded>(token);
 
       setRole(decodedToken.validUser.role);
+      setUserId(decodedToken.validUser.id);
+
       setAuthenticated(true);
     }
 
     setLoading(false);
   }, [router]);
 
-  return { loading, authenticated, role };
+  return { loading, authenticated, role, userId };
 };

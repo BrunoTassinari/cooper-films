@@ -5,6 +5,7 @@ export class Script {
   public title: string;
   public content: string;
   public status: string;
+  public is_assumed: boolean;
   public contact_name: string;
   public contact_email: string;
   public contact_phone: string;
@@ -20,6 +21,7 @@ export class Script {
     this.title = title;
     this.content = content;
     this.status = ScriptStatus.AWAITING_ANALYSIS as string;
+    this.is_assumed = false;
     this.contact_name = contact_name;
     this.contact_email = contact_email;
     this.contact_phone = contact_phone;

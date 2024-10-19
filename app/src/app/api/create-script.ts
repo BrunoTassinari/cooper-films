@@ -1,4 +1,4 @@
-type CreateGoalRequest = {
+type CreateScriptRequest = {
   title: string;
   content: string;
   contact_name: string;
@@ -12,7 +12,7 @@ export const createScript = async ({
   contact_name,
   contact_email,
   contact_phone,
-}: CreateGoalRequest) => {
+}: CreateScriptRequest) => {
   const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/script`;
 
   const response = await fetch(url, {

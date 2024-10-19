@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import type { Request, Response, NextFunction } from 'express';
 
 const jwtGuard = async (req: Request, res: Response, next: NextFunction) => {
-  console.log('req.headers.authorization', req.headers.authorization);
   const token = req.headers.authorization?.split(' ')[1];
 
   if (!token) {

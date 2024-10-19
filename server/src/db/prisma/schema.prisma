@@ -30,6 +30,7 @@ model Script {
   title         String
   content       String
   status        String
+  is_assumed    Boolean  @default(false)
   contact_name  String
   contact_email String
   contact_phone String
@@ -37,4 +38,26 @@ model Script {
   updated_at    DateTime @updatedAt
 
   @@map("scripts")
+}
+
+model UserScript {
+  id         String   @id @default(cuid())
+  user_id    String
+  script_id  String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("user_scripts")
+}
+
+model ScriptHistory {
+  id          String   @id @default(cuid())
+  script_id   String
+  user_id     String
+  action      String
+  observation String
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  @@map("script_histories")
 }
