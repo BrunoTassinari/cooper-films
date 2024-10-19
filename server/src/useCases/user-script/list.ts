@@ -1,6 +1,7 @@
-import type { UserScriptRepository } from '../domain/repositories/user-script-repository';
-import type { ScriptData } from '../types/user';
-import { findScriptsByIdsUseCase, findUserUseCase } from '.';
+import type { Script } from '../../domain/entities/script';
+import type { UserScriptRepository } from '../../domain/repositories/user-script-repository';
+import type { ScriptData } from '../../types/user';
+import { findScriptsByIdsUseCase } from '../script/';
 
 export class ListUserScriptsUseCase {
   constructor(private readonly repository: UserScriptRepository) {}
@@ -12,9 +13,7 @@ export class ListUserScriptsUseCase {
 
     console.log('userScripts', userScripts);
 
-    const userScriptsIds = userScripts.map(
-      (userScript) => userScript.script_id
-    );
+    const userScriptsIds = userScripts.map((userScript) => userScript.script_id);
 
     return await findScriptsByIdsUseCase.execute(userScriptsIds);
   }

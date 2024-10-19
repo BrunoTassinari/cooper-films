@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import { Router } from 'express';
 import z from 'zod';
-import { findUserUseCase } from '../../useCases';
+import { findUserByCredentialsUseCase } from '../../useCases/user';
 import { tryCatch } from '../../lib/try-catch-handler';
 
 const router = Router();
@@ -16,7 +16,7 @@ router.post(
   tryCatch(async (req, res) => {
     const { email, password } = LoginSchema.parse(req.body);
 
-    const validUser = await findUserUseCase.execute(email, password);
+    const validUser = await findUserByCredentialsUseCase.execute(email, password);
 
     if (!validUser) {
       res.status(401).json({ message: 'Invalid email or password' });

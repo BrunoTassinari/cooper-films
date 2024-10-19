@@ -1,7 +1,7 @@
-import type { UserRepository } from '../domain/repositories/user-repository';
-import type { UserData } from '../types/user';
+import type { UserRepository } from '../../domain/repositories/user-repository';
+import type { UserData } from '../../types/user';
 
-export class FindUserUseCase {
+export class FindUserByCredentialsUseCase {
   constructor(private readonly repository: UserRepository) {}
 
   async execute(email: string, password: string): Promise<UserData | null> {

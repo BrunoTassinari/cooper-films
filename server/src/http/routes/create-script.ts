@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import z from 'zod';
-import { createScriptUseCase } from '../../useCases';
+import { createScriptUseCase } from '../../useCases/script';
 import { tryCatch } from '../../lib/try-catch-handler';
 
 const CreateScriptSchema = z.object({

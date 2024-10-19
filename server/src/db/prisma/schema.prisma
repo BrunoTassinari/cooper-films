@@ -26,16 +26,17 @@ model User {
 }
 
 model Script {
-  id            String   @id @default(cuid())
-  title         String
-  content       String
-  status        String
-  is_assumed    Boolean  @default(false)
-  contact_name  String
-  contact_email String
-  contact_phone String
-  created_at    DateTime @default(now())
-  updated_at    DateTime @updatedAt
+  id             String   @id @default(cuid())
+  title          String
+  content        String
+  status         String
+  is_assumed     Boolean  @default(false)
+  approver_count Int      @default(0)
+  contact_name   String
+  contact_email  String
+  contact_phone  String
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
 
   @@map("scripts")
 }

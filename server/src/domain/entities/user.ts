@@ -5,13 +5,13 @@ export class User {
   public name: string;
   public email: string;
   public password: string;
-  public role: string;
+  public role: UserRoles;
 
   constructor(name: string, email: string, password: string, role: UserRoles) {
     this.id = '';
     this.name = name;
     this.email = email;
     this.password = password;
-    this.role = role as string;
+    this.role = role;
   }
 }

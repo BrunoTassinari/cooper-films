@@ -12,4 +12,5 @@ export interface ScriptRepository {
   findOne(id: string): Promise<Script | null>;
   assume(id: string): void;
   findMany(ids: string[]): Promise<Script[]>;
+  update(script: Script): Promise<Script>;
 }

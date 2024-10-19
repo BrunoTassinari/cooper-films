@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import { tryCatch } from '../../lib/try-catch-handler';
-import { listUserScriptsUseCase } from '../../useCases';
+import { listUserScriptsUseCase } from '../../useCases/user-script';
 import { jwtGuard } from '../../middlewares/jwt-auth';
 
 const router = Router();

@@ -10,6 +10,24 @@ export class ScriptPrismaRepository implements ScriptRepository {
     this.prisma = new PrismaClient();
   }
 
+  async update(script: Script): Promise<Script> {
+    const response = await this.prisma.script.update({
+      where: {
+        id: script.id,
+      },
+      data: {
+        status: script.status,
+        is_assumed: script.is_assumed,
+        approver_count: script.approver_count,
+      },
+    });
+
+    return {
+      ...response,
+      status: response.status as ScriptStatus,
+    };
+  }
+
   async findMany(ids: string[]): Promise<Script[]> {
     const response = this.prisma.script.findMany({
       where: {
@@ -87,18 +105,10 @@ export class ScriptPrismaRepository implements ScriptRepository {
     };
   }
 
-  async find(
-    name: string,
-    email: string,
-    phone: string
-  ): Promise<Script[] | null> {
+  async find(name: string, email: string, phone: string): Promise<Script[] | null> {
     const response = await this.prisma.script.findMany({
       where: {
-        OR: [
-          { contact_name: name },
-          { contact_email: email },
-          { contact_phone: phone },
-        ],
+        OR: [{ contact_name: name }, { contact_email: email }, { contact_phone: phone }],
       },
     });
 

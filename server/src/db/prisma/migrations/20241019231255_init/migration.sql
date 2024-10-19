@@ -18,6 +18,7 @@ CREATE TABLE "scripts" (
     "content" TEXT NOT NULL,
     "status" TEXT NOT NULL,
     "is_assumed" BOOLEAN NOT NULL DEFAULT false,
+    "approver_count" INTEGER NOT NULL DEFAULT 0,
     "contact_name" TEXT NOT NULL,
     "contact_email" TEXT NOT NULL,
     "contact_phone" TEXT NOT NULL,

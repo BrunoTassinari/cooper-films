@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import { tryCatch } from '../../lib/try-catch-handler';
-import { findScriptUseCase } from '../../useCases';
+import { findScriptByContactInfoUseCase } from '../../useCases/script';
 
 const router = Router();
 
@@ -14,7 +14,7 @@ router.get(
     const email = (contact_email as string) || '';
     const phone = (contact_phone as string) || '';
 
-    const response = await findScriptUseCase.execute(name, email, phone);
+    const response = await findScriptByContactInfoUseCase.execute(name, email, phone);
 
     res.status(200).json(response);
   })
