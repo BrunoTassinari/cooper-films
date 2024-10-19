@@ -50,18 +50,9 @@ export default function DetailScriptPage({ params }: DetailScriptPageProps) {
 
   return (
     <div className="h-full w-full flex flex-col gap-6 p-8 rounded-lg">
-      <div className="flex gap-6">
-        <Link
-          href={"/scripts/list"}
-          className="mr-6 flex items-center gap-2 hover:underline hover:underline-offset-4"
-        >
-          <ArrowLeft size={16} />
-          Voltar a lista
-        </Link>
-        <span className="ml-64 font-bold text-lg tracking-tight leading-normal text-slate-600">
-          Detalhes do roteiro - {item.title}
-        </span>
-      </div>
+      <span className="font-bold text-lg tracking-tight leading-normal text-slate-600 sel">
+        Detalhes do roteiro - {item.title}
+      </span>
 
       <div className="flex justify-between gap-6 w-full">
         <div className="flex flex-col gap-4 w-full">

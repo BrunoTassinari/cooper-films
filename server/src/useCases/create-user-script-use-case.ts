@@ -14,15 +14,19 @@ export class CreateUserScriptUseCase {
   async execute({
     script_id,
     user_id,
-    role,
   }: CreateUserScriptBody): Promise<UserScript> {
+    //validar se usuario existe
+    // validar se script existe
+    // validar se script já foi assumido
+    // validar se o cargo do usuario é permitido para assumir o script com base no cargo e status do script
+
     const foundScript = await findScriptByIdUseCase.execute(script_id);
 
     if (!foundScript) throw new Error('Script not found');
 
     if (foundScript.is_assumed) throw new Error('Script is already assumed');
 
-    const userScript = new UserScript(script_id, user_id);
+    const userScript = new UserScript(user_id, script_id);
 
     await this.repository.create(userScript);
     await assumeScriptUseCase.execute(script_id);

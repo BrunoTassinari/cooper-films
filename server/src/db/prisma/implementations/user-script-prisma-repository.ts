@@ -8,6 +8,17 @@ export class UserScriptPrismaRepository implements UserScriptRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+
+  async list(userId: string): Promise<UserScript[]> {
+    const response = await this.prisma.userScript.findMany({
+      where: {
+        user_id: userId,
+      },
+    });
+
+    return response;
+  }
+
   async create(userScript: UserScript): Promise<UserScript> {
     const response = await this.prisma.userScript.create({
       data: {

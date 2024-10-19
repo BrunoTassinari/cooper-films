@@ -1,3 +1,4 @@
+import { FindScriptsByIdsUseCase } from './find-scripts-by-ids-use-case';
 import { AssumeScriptUseCase } from './assume-script-use-case';
 import { ListScriptUseCase } from './list-script-use-case';
 import { FindScriptUseCase } from './find-script-use-case';
@@ -9,6 +10,7 @@ import { ScriptPrismaRepository } from '../db/prisma/implementations/script-pris
 import { FindScriptByIdUseCase } from './find-script-by-id-use-case';
 import { CreateUserScriptUseCase } from './create-user-script-use-case';
 import { UserScriptPrismaRepository } from '../db/prisma/implementations/user-script-prisma-repository';
+import { ListUserScriptsUseCase } from './list-user-scripts-use-case';
 
 const createScriptUseCase = new CreateScriptUseCase(
   new ScriptPrismaRepository()
@@ -29,6 +31,14 @@ const findScriptByIdUseCase = new FindScriptByIdUseCase(
   new ScriptPrismaRepository()
 );
 
+const findScriptsByIdsUseCase = new FindScriptsByIdsUseCase(
+  new ScriptPrismaRepository()
+);
+
+const listUserScriptsUseCase = new ListUserScriptsUseCase(
+  new UserScriptPrismaRepository()
+);
+
 export {
   assumeScriptUseCase,
   findScriptByIdUseCase,
@@ -37,4 +47,6 @@ export {
   listScriptUseCase,
   findScriptUseCase,
   findUserUseCase,
+  findScriptsByIdsUseCase,
+  listUserScriptsUseCase,
 };

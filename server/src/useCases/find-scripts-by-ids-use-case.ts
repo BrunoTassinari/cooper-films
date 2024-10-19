@@ -2,11 +2,11 @@ import type { ScriptRepository } from '../domain/repositories/script-repository'
 import { formatScriptData } from '../lib/format-script-data';
 import type { ScriptData } from '../types/user';
 
-export class ListScriptUseCase {
-  constructor(private repository: ScriptRepository) {}
+export class FindScriptsByIdsUseCase {
+  constructor(private readonly repository: ScriptRepository) {}
 
-  async execute(): Promise<ScriptData[] | null> {
-    const scriptList = await this.repository.list();
+  async execute(ids: string[]): Promise<ScriptData[]> {
+    const scriptList = await this.repository.findMany(ids);
 
     const formatedScriptList = scriptList.map((script) =>
       formatScriptData(script)

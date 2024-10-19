@@ -75,7 +75,7 @@ export default function ListScriptPage() {
   return (
     <div className="flex flex-col gap-4">
       <span className="font-bold text-lg tracking-tight leading-normal text-slate-600 self-center">
-        Validar roteiros
+        Roteiros
       </span>
       <DataTable columns={columns} data={data} />
     </div>

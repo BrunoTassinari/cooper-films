@@ -7,6 +7,7 @@ import { findScriptRoute } from './routes/find-script';
 import { listScriptsRoute } from './routes/list-scripts';
 import { findScriptByIdRoute } from './routes/find-script-by-id,';
 import { createUserScriptRoute } from './routes/create-user-script';
+import { listUserScriptsRoute } from './routes/list-user-scripts';
 
 const app = express();
 
@@ -19,5 +20,6 @@ app.use(createUserScriptRoute);
 app.use(findScriptRoute);
 app.use(listScriptsRoute);
 app.use(findScriptByIdRoute);
+app.use(listUserScriptsRoute);
 
 export { app };

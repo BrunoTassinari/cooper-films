@@ -10,6 +10,23 @@ export class ScriptPrismaRepository implements ScriptRepository {
     this.prisma = new PrismaClient();
   }
 
+  async findMany(ids: string[]): Promise<Script[]> {
+    const response = this.prisma.script.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    return response.then((scripts) =>
+      scripts.map((script) => ({
+        ...script,
+        status: script.status as ScriptStatus,
+      }))
+    );
+  }
+
   async assume(id: string): Promise<void> {
     await this.prisma.script.update({
       where: {

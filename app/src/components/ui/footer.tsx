@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FileSearch, FileCheck, FilePlus2, FileUser } from "lucide-react";
+import { Button } from "./button";
 
 export default function Footer() {
   return (
@@ -13,7 +14,6 @@ export default function Footer() {
         <FilePlus2 size={16} />
         Novo roteiro
       </Link>
-
       <Link
         href={"/scripts/find"}
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"
@@ -21,7 +21,6 @@ export default function Footer() {
         <FileSearch size={16} />
         Consultar status
       </Link>
-
       <Link
         href={"/scripts/list"}
         className="flex items-center gap-2 hover:underline hover:underline-offset-4"
