@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import z from 'zod';
-import { createScriptUseCase } from '../../useCases/script';
-import { tryCatch } from '../../lib/try-catch-handler';
+import { createScriptUseCase } from '../../../useCases/script';
+import { tryCatch } from '../../../lib/try-catch-handler';
 
 const CreateScriptSchema = z.object({
   title: z.string(),
@@ -15,7 +15,7 @@ const CreateScriptSchema = z.object({
 const router = Router();
 
 router.post(
-  '/script',
+  '',
   tryCatch(async (req: Request, res: Response) => {
     const body = CreateScriptSchema.parse(req.body);
 

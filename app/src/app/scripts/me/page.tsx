@@ -3,11 +3,10 @@
 import { useAuth } from "@/hooks/use-auth";
 import { DataTable } from "../../../components/data-table";
 import { useEffect, useState } from "react";
-import { ListScripts } from "@/app/api/list-scripts";
 import type { ColumnDef } from "@tanstack/react-table";
 import { z } from "zod";
-import ListRowActions from "@/components/list-row-actions";
 import { ListUserScripts } from "@/app/api/list-user-scripts";
+import ListRowActions from "@/components/list-row-actions";
 
 export type ListScript = z.infer<typeof listScripSchema>;
 
@@ -44,7 +43,9 @@ const columns: ColumnDef<ListScript>[] = [
   {
     id: "actions",
     header: "Ações",
-    cell: ({ row }) => <ListRowActions id={row.original.id} />,
+    cell: ({ row }) => (
+      <ListRowActions script={row.original} showValidatioActions={true} />
+    ),
   },
 ];
 

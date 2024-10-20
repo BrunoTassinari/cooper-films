@@ -8,6 +8,24 @@ export class UserScriptPrismaRepository implements UserScriptRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+  async delete(userScriptId: string): Promise<void> {
+    await this.prisma.userScript.delete({
+      where: {
+        id: userScriptId,
+      },
+    });
+  }
+
+  async findByRelation(userId: string, scriptId: string): Promise<UserScript | null> {
+    const response = await this.prisma.userScript.findFirst({
+      where: {
+        user_id: userId,
+        script_id: scriptId,
+      },
+    });
+
+    return response;
+  }
 
   async list(userId: string): Promise<UserScript[]> {
     const response = await this.prisma.userScript.findMany({

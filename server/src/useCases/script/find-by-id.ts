@@ -9,7 +9,7 @@ export class FindScriptByIdUseCase {
     const response = await this.repository.findOne(id);
 
     if (!response) {
-      return null;
+      throw new Error('Script not found');
     }
 
     return response;

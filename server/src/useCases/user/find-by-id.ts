@@ -8,7 +8,7 @@ export class FindUserByIdUseCase {
     const user = await this.userRepository.findById(id);
 
     if (!user) {
-      return null;
+      throw new Error('User not found');
     }
 
     return {

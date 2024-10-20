@@ -1,3 +1,4 @@
+import { ChangeScriptStatusUseCase } from './change-status';
 import { FindScriptsByIdsUseCase } from './find-by-ids';
 import { FindScriptByContactInfoUseCase } from './find-by-contact-info';
 import { ListScriptUseCase } from './list';
@@ -14,6 +15,7 @@ const findScriptByIdUseCase = new FindScriptByIdUseCase(repository);
 const findScriptsByIdsUseCase = new FindScriptsByIdsUseCase(repository);
 const findScriptByContactInfoUseCase = new FindScriptByContactInfoUseCase(repository);
 const listScriptUseCase = new ListScriptUseCase(repository);
+const changeScriptStatusUseCase = new ChangeScriptStatusUseCase(repository);
 
 export {
   createScriptUseCase,
@@ -22,4 +24,5 @@ export {
   findScriptsByIdsUseCase,
   findScriptByContactInfoUseCase,
   listScriptUseCase,
+  changeScriptStatusUseCase,
 };

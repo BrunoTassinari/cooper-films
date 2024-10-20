@@ -1,13 +1,13 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
-import { tryCatch } from '../../lib/try-catch-handler';
-import { listScriptUseCase } from '../../useCases/script';
-import { jwtGuard } from '../../middlewares/jwt-auth';
+import { tryCatch } from '../../../lib/try-catch-handler';
+import { listScriptUseCase } from '../../../useCases/script';
+import { jwtGuard } from '../../../middlewares/jwt-auth';
 
 const router = Router();
 
 router.get(
-  '/script/list',
+  '/list',
   jwtGuard,
   tryCatch(async (req: Request, res: Response) => {
     const response = await listScriptUseCase.execute();

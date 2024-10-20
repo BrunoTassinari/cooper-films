@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
-import { tryCatch } from '../../lib/try-catch-handler';
-import { findScriptByContactInfoUseCase } from '../../useCases/script';
+import { tryCatch } from '../../../lib/try-catch-handler';
+import { findScriptByContactInfoUseCase } from '../../../useCases/script';
 
 const router = Router();
 
 router.get(
-  '/script',
+  '',
   tryCatch(async (req: Request, res: Response) => {
     const { contact_name, contact_email, contact_phone } = req.query;
 
@@ -20,4 +20,4 @@ router.get(
   })
 );
 
-export { router as findScriptRoute };
+export { router as findByContactInfoRoute };

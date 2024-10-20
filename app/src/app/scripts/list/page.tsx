@@ -43,7 +43,7 @@ const columns: ColumnDef<ListScript>[] = [
   {
     id: "actions",
     header: "Ações",
-    cell: ({ row }) => <ListRowActions id={row.original.id} />,
+    cell: ({ row }) => <ListRowActions script={row.original} />,
   },
 ];
 

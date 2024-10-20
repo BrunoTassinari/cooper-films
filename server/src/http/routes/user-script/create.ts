@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import type { Request, Response } from 'express';
 import z from 'zod';
-import { createUserScriptUseCase } from '../../useCases/user-script';
-import { tryCatch } from '../../lib/try-catch-handler';
-import { jwtGuard } from '../../middlewares/jwt-auth';
+import { createUserScriptUseCase } from '../../../useCases/user-script';
+import { tryCatch } from '../../../lib/try-catch-handler';
+import { jwtGuard } from '../../../middlewares/jwt-auth';
 
 const CreateUserScriptSchema = z.object({
   script_id: z.string(),
@@ -13,7 +13,7 @@ const CreateUserScriptSchema = z.object({
 const router = Router();
 
 router.post(
-  '/script/user',
+  '',
   jwtGuard,
   tryCatch(async (req: Request, res: Response) => {
     const body = CreateUserScriptSchema.parse(req.body);
