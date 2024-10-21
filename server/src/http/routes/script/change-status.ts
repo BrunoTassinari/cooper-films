@@ -22,7 +22,7 @@ router.put(
 
     await changeScriptStatusUseCase.execute(body);
 
-    res.status(204).json({});
+    res.status(204).send();
   })
 );
 

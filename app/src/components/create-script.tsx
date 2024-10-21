@@ -30,9 +30,13 @@ export default function CreateScriptForm() {
     });
 
   async function handleCreateScript(data: createScriptForm) {
-    await apiHandler(() => createScript(data));
-    toast.success("Roteiro criado com sucesso!");
-    reset();
+    try {
+      await apiHandler(() => createScript(data));
+      toast.success("Roteiro criado com sucesso!");
+      reset();
+    } catch (error) {
+      toast.error(` ${error}`);
+    }
   }
 
   return (

@@ -21,15 +21,15 @@ import { createUserScript } from "@/app/api/user-script/create";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import DetailsModal from "./details-modal";
 import ObservationModal from "./observation-modal";
 import { changeScriptStatus } from "@/app/api/script/change-status";
 import { apiHandler } from "@/lib/api-handler";
+import type { ScriptData } from "@/types/index.ts";
 
 type ListRowActionsProps = {
-  script: any;
+  script: ScriptData;
   showValidatioActions?: boolean;
 };
 
@@ -40,36 +40,90 @@ export default function ListRowActions({
   const { userId, role } = useAuth();
   const [modalDetais, openModalDetails] = useState(false);
   const [modalObservation, openModalObservation] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
 
   const [status, setStatus] = useState("");
   const [observation, setObservation] = useState("");
 
-  const router = useRouter();
+  async function handleApproveScript() {
+    try {
+      await apiHandler(() =>
+        changeScriptStatus({
+          script_id: script.id,
+          user_id: userId,
+          status: "APPROVED",
+        })
+      );
+
+      toast.success("Roteiro aprovado com sucesso!");
+      setInterval(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      toast.error(` ${error}`);
+    }
+  }
+
+  async function handleRejectScript() {
+    try {
+      await apiHandler(() =>
+        changeScriptStatus({
+          script_id: script.id,
+          user_id: userId,
+          status: "REJECTED",
+        })
+      );
+
+      toast.success("Roteiro reprovado com sucesso!");
+      setInterval(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      toast.error(` ${error}`);
+    }
+  }
 
   async function handleUpdateStatus() {
-    await apiHandler(() =>
-      changeScriptStatus({
-        script_id: script.id,
-        user_id: userId,
-        status,
-        observation,
-      })
-    );
+    try {
+      await apiHandler(() =>
+        changeScriptStatus({
+          script_id: script.id,
+          user_id: userId,
+          status,
+          observation,
+        })
+      );
 
-    toast.success("Status atualizado com sucesso!");
+      toast.success("Status atualizado com sucesso!");
+      setInterval(() => {
+        window.location.reload();
+      }, 1000);
+
+      openModalObservation(false);
+      setObservation("");
+    } catch (error) {
+      toast.error(` ${error}`);
+    }
   }
 
   async function handleAssumeScript() {
-    await apiHandler(() =>
-      createUserScript({
-        user_id: userId,
-        script_id: script.id,
-        role,
-      })
-    );
+    try {
+      await apiHandler(() =>
+        createUserScript({
+          user_id: userId,
+          script_id: script.id,
+          role,
+        })
+      );
 
-    toast.success("Roteiro assumido com sucesso!");
-    router.push("/scripts/list");
+      toast.success("Roteiro assumido com sucesso! Redirecionando...");
+
+      setInterval(() => {
+        window.location.reload();
+      }, 1000);
+    } catch (error) {
+      toast.error(` ${error}`);
+    }
   }
 
   return (
@@ -100,6 +154,7 @@ export default function ListRowActions({
                     className="cursor-pointer"
                     onClick={() => {
                       setStatus("AWAITING_REVIEW");
+                      setModalTitle("Informe o motivo para envio à revisão:");
                       openModalObservation(true);
                     }}
                   >
@@ -110,6 +165,7 @@ export default function ListRowActions({
                     className="cursor-pointer"
                     onClick={() => {
                       setStatus("REJECTED");
+                      setModalTitle("Informe o motivo da reprovação:");
                       openModalObservation(true);
                     }}
                   >
@@ -126,6 +182,7 @@ export default function ListRowActions({
                     className="cursor-pointer"
                     onClick={() => {
                       setStatus("AWAITING_APPROVAL");
+                      setModalTitle("Informe pontos de melhoria:");
                       openModalObservation(true);
                     }}
                   >
@@ -140,20 +197,14 @@ export default function ListRowActions({
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     className="cursor-pointer"
-                    onClick={() => {
-                      setStatus("APPROVED");
-                      handleUpdateStatus();
-                    }}
+                    onClick={handleApproveScript}
                   >
                     <FileCheck2 />
                     Aprovar roteiro
                   </DropdownMenuItem>
                   <DropdownMenuItem
                     className="cursor-pointer"
-                    onClick={() => {
-                      setStatus("REJECTED");
-                      handleUpdateStatus();
-                    }}
+                    onClick={handleRejectScript}
                   >
                     <FileX />
                     Reprovar roteiro
@@ -183,6 +234,7 @@ export default function ListRowActions({
         observation={observation}
         setObservation={setObservation}
         action={handleUpdateStatus}
+        title={modalTitle}
       />
     </>
   );

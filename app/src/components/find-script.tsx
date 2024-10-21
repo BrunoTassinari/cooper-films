@@ -8,11 +8,12 @@ import { Input } from "./ui/input";
 import ReactInputMask from "react-input-mask";
 import { Button } from "./ui/button";
 import { findScript } from "@/app/api/script/find-by-contact-info";
-import type { Script } from "@/types/script";
+import type { ScriptData } from "@/types/index.ts";
 import { apiHandler } from "@/lib/api-handler";
+import { toast } from "react-toastify";
 
 type FindScriptFormProps = {
-  setScripts: (scripts: Script[]) => void;
+  setScripts: (scripts: ScriptData[]) => void;
 };
 
 type findScriptForm = z.infer<typeof findScriptFormSchema>;
@@ -32,15 +33,17 @@ export default function FindScriptForm({ setScripts }: FindScriptFormProps) {
     register,
     handleSubmit,
     formState: { isValid },
-    reset,
   } = useForm<findScriptForm>({
     resolver: zodResolver(findScriptFormSchema),
   });
 
   async function handleSearchScript(query: findScriptForm) {
-    const response = await apiHandler(() => findScript(query));
-    setScripts(response);
-    reset();
+    try {
+      const response = await apiHandler(() => findScript(query));
+      setScripts(response);
+    } catch (error) {
+      toast.error(` ${error}`);
+    }
   }
 
   return (

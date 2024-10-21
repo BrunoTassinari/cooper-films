@@ -4,24 +4,13 @@ import { useAuth } from "@/hooks/use-auth";
 import { DataTable } from "../../../components/data-table";
 import { useEffect, useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { z } from "zod";
 import { ListUserScripts } from "@/app/api/user-script/list";
 import ListRowActions from "@/components/list-row-actions";
 import { apiHandler } from "@/lib/api-handler";
 import { toast } from "react-toastify";
+import type { ScriptData } from "@/types/index.ts";
 
-export type ListScript = z.infer<typeof listScripSchema>;
-
-const listScripSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  content: z.string(),
-  contact_name: z.string(),
-  created_at: z.string(),
-  status: z.string(),
-});
-
-const columns: ColumnDef<ListScript>[] = [
+const columns: ColumnDef<ScriptData>[] = [
   {
     accessorKey: "title",
     header: "Titulo",
@@ -39,6 +28,10 @@ const columns: ColumnDef<ListScript>[] = [
     header: "Status",
   },
   {
+    accessorKey: "approver_count",
+    header: "Votação aprovadores",
+  },
+  {
     id: "actions",
     header: "Ações",
     cell: ({ row }) => (
@@ -50,13 +43,15 @@ const columns: ColumnDef<ListScript>[] = [
 export default function ListScriptPage() {
   const { authenticated, userId } = useAuth();
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<ScriptData[]>([]);
 
   const handleFetchData = async () => {
-    const response = await apiHandler(() => ListUserScripts(userId));
-
-    setData(response);
+    try {
+      const response = await apiHandler(() => ListUserScripts(userId));
+      setData(response);
+    } catch (error) {
+      toast.error(` ${error}`);
+    }
   };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>

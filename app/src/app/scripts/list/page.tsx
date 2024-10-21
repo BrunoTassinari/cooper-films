@@ -9,19 +9,9 @@ import { z } from "zod";
 import ListRowActions from "@/components/list-row-actions";
 import { toast } from "react-toastify";
 import { apiHandler } from "@/lib/api-handler";
+import type { ScriptData } from "@/types/index.ts";
 
-export type ListScript = z.infer<typeof listScripSchema>;
-
-const listScripSchema = z.object({
-  id: z.string(),
-  title: z.string(),
-  content: z.string(),
-  contact_name: z.string(),
-  created_at: z.string(),
-  status: z.string(),
-});
-
-const columns: ColumnDef<ListScript>[] = [
+const columns: ColumnDef<ScriptData>[] = [
   {
     accessorKey: "title",
     header: "Titulo",
@@ -39,6 +29,10 @@ const columns: ColumnDef<ListScript>[] = [
     header: "Status",
   },
   {
+    accessorKey: "approver_count",
+    header: "Votação aprovadores",
+  },
+  {
     id: "actions",
     header: "Ações",
     cell: ({ row }) => <ListRowActions script={row.original} />,
@@ -48,13 +42,15 @@ const columns: ColumnDef<ListScript>[] = [
 export default function ListScriptPage() {
   const { authenticated } = useAuth();
 
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const [data, setData] = useState<any[]>([]);
+  const [data, setData] = useState<ScriptData[]>([]);
 
   const handleFetchData = async () => {
-    const response = await apiHandler(() => ListScripts());
-
-    setData(response);
+    try {
+      const response = await apiHandler(() => ListScripts());
+      setData(response);
+    } catch (error) {
+      toast.error(` ${error}`);
+    }
   };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>

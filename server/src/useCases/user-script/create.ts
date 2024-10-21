@@ -3,40 +3,29 @@ import { ScriptStatus } from '../../domain/enums/script-status';
 import { UserRoles } from '../../domain/enums/user-roles';
 import type { UserScriptRepository } from '../../domain/repositories/user-script-repository';
 import { findUserByidUseCase } from '../user';
-import type { UserData } from '../../types/user';
+import type { CreateUserScriptBody, UserData } from '../../types/index.ts';
 import type { Script } from '../../domain/entities/script';
 import { findScriptByIdUseCase, updateScriptUseCase } from '../script';
-import { createScriptHistoriesUseCase } from '../script-histories';
+import { createScriptHistoriesUseCase, findScriptHistoriesActionByRelationUseCase } from '../script-histories';
 import { ForbiddenException } from '../../domain/exceptions/forbidden';
 import { ConflictException } from '../../domain/exceptions/conflict';
-
-type CreateUserScriptBody = {
-  script_id: string;
-  user_id: string;
-};
 
 export class CreateUserScriptUseCase {
   constructor(private readonly repository: UserScriptRepository) {}
 
   async execute({ script_id, user_id }: CreateUserScriptBody): Promise<UserScript> {
-    const foundUser = await findUserByidUseCase.execute(user_id);
-    const foundScript = await findScriptByIdUseCase.execute(script_id);
+    const user = await findUserByidUseCase.execute(user_id);
+    const script = await findScriptByIdUseCase.execute(script_id);
 
-    if (foundScript!.is_assumed) throw new Error('Script is already assumed');
-
-    if (foundScript?.status === ScriptStatus.APPROVED || foundScript?.status === ScriptStatus.REJECTED)
-      throw new ConflictException('Script is already finished');
-
-    if (!this.validateRole(foundUser!.role, foundScript!.status))
-      throw new ForbiddenException('User role is not allowed to assume this script status');
+    await this.validate(user!, script!);
 
     const userScript = new UserScript(user_id, script_id);
 
-    foundScript?.status === this.changeToAssumedStatus(foundScript!.status);
+    script!.status = this.changeToAssumedStatus(script!.status);
 
     await this.repository.create(userScript);
-    await this.updateScript(foundScript!);
-    await this.createHistoric(foundUser!, foundScript!);
+    await this.updateScript(script!);
+    await this.createHistoric(user!, script!);
 
     return userScript;
   }
@@ -49,6 +38,20 @@ export class CreateUserScriptUseCase {
       user_id: user.id,
       action,
     });
+  }
+
+  private async validate(user: UserData, script: Script): Promise<void> {
+    if (script.is_assumed) throw new Error('Script is already assumed');
+
+    if (script.status === ScriptStatus.APPROVED || script.status === ScriptStatus.REJECTED)
+      throw new ConflictException('Script is already finished');
+
+    if (!this.validateRole(user.role, script!.status))
+      throw new ForbiddenException('User role is not allowed to assume this script status');
+
+    await this.verifyUserAlreadyApproved(script.id, user.id);
+
+    return;
   }
 
   private async updateScript(script: Script): Promise<void> {
@@ -81,5 +84,13 @@ export class CreateUserScriptUseCase {
       default:
         return status;
     }
+  }
+
+  private async verifyUserAlreadyApproved(script_id: string, user_id: string) {
+    const histories = await findScriptHistoriesActionByRelationUseCase.execute(script_id, user_id, ScriptStatus.VOTED);
+
+    if (histories.length > 0) throw new ForbiddenException('User already approved this script');
+
+    return;
   }
 }

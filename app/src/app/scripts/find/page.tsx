@@ -23,6 +23,10 @@ const columns: ColumnDef<ListScript>[] = [
     accessorKey: "status",
     header: "Status",
   },
+  {
+    accessorKey: "approver_count",
+    header: "Votação aprovadores",
+  },
 ];
 
 export default function FindScripts() {

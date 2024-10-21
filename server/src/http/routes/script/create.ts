@@ -4,7 +4,7 @@ import z from 'zod';
 import { createScriptUseCase } from '../../../useCases/script';
 import { tryCatch } from '../../../lib/try-catch-handler';
 
-const CreateScriptSchema = z.object({
+const schema = z.object({
   title: z.string(),
   content: z.string(),
   contact_name: z.string(),
@@ -17,7 +17,7 @@ const router = Router();
 router.post(
   '',
   tryCatch(async (req: Request, res: Response) => {
-    const body = CreateScriptSchema.parse(req.body);
+    const body = schema.parse(req.body);
 
     const response = await createScriptUseCase.execute(body);
 

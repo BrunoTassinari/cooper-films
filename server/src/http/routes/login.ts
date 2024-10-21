@@ -6,7 +6,7 @@ import { tryCatch } from '../../lib/try-catch-handler';
 
 const router = Router();
 
-const LoginSchema = z.object({
+const schema = z.object({
   email: z.string().email(),
   password: z.string(),
 });
@@ -14,7 +14,7 @@ const LoginSchema = z.object({
 router.post(
   '/login',
   tryCatch(async (req, res) => {
-    const { email, password } = LoginSchema.parse(req.body);
+    const { email, password } = schema.parse(req.body);
 
     const validUser = await findUserByCredentialsUseCase.execute(email, password);
 

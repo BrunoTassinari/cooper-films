@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { FileSearch, FileCheck, FilePlus2, FileUser } from "lucide-react";
+import {
+  FileSearch,
+  FileCheck,
+  FilePlus2,
+  FileUser,
+  ArrowRight,
+} from "lucide-react";
 
 export default function Footer() {
   return (
@@ -33,6 +39,13 @@ export default function Footer() {
       >
         <FileUser size={16} />
         Meus roteiros 🔒
+      </Link>
+      <Link
+        href={"/login"}
+        className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+      >
+        <ArrowRight size={16} />
+        Logout
       </Link>
     </footer>
   );

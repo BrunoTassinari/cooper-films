@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { login } from "../api/login";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const loginFormSchema = z.object({
   email: z.string().email({ message: "E-mail inválido" }),
@@ -24,18 +25,15 @@ export default function LoginPage() {
   });
 
   async function handleLogin(data: loginForm) {
-    console.log(data);
     try {
       const response = await login(data);
-
-      console.log(response);
 
       if (response.token) {
         localStorage.setItem("authToken", JSON.stringify(response.token));
         router.push("/scripts/list");
       }
     } catch (error) {
-      console.error(error);
+      toast.error(error as string);
     }
   }
 

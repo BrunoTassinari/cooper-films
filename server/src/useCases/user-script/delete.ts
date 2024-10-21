@@ -3,7 +3,7 @@ import type { UserScriptRepository } from '../../domain/repositories/user-script
 export class DeleteUserScriptUseCase {
   constructor(private repository: UserScriptRepository) {}
 
-  async execute(userScriptId: string): Promise<void> {
-    await this.repository.delete(userScriptId);
+  async execute(user_script_id: string): Promise<void> {
+    await this.repository.delete(user_script_id);
   }
 }

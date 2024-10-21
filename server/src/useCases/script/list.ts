@@ -1,6 +1,6 @@
 import type { ScriptRepository } from '../../domain/repositories/script-repository';
 import { formatScriptData } from '../../lib/format-script-data';
-import type { ScriptData } from '../../types/user';
+import type { ScriptData } from '../../types/index.ts';
 
 export class ListScriptUseCase {
   constructor(private repository: ScriptRepository) {}

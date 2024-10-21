@@ -8,6 +8,15 @@ export class ScriptHistoryPrismaRepository implements ScriptHistoryRepository {
   constructor() {
     this.prisma = new PrismaClient();
   }
+  async findActionsByRelation(script_id: string, user_id: string, action_status: string): Promise<ScriptHistoriy[]> {
+    return await this.prisma.scriptHistory.findMany({
+      where: {
+        script_id,
+        user_id,
+        action: { contains: action_status },
+      },
+    });
+  }
 
   async create(scriptHistories: ScriptHistoriy): Promise<void> {
     await this.prisma.scriptHistory.create({

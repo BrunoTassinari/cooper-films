@@ -5,7 +5,7 @@ import { createUserScriptUseCase } from '../../../useCases/user-script';
 import { tryCatch } from '../../../lib/try-catch-handler';
 import { jwtGuard } from '../../../auth/jwt-auth';
 
-const CreateUserScriptSchema = z.object({
+const schema = z.object({
   script_id: z.string(),
   user_id: z.string(),
 });
@@ -16,7 +16,7 @@ router.post(
   '',
   jwtGuard,
   tryCatch(async (req: Request, res: Response) => {
-    const body = CreateUserScriptSchema.parse(req.body);
+    const body = schema.parse(req.body);
 
     const response = await createUserScriptUseCase.execute(body);
 

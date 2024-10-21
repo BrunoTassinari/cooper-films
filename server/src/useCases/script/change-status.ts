@@ -2,54 +2,48 @@ import { findScriptByIdUseCase } from '.';
 import type { Script } from '../../domain/entities/script';
 import { ScriptStatus } from '../../domain/enums/script-status';
 import type { ScriptRepository } from '../../domain/repositories/script-repository';
-import type { UserData } from '../../types/user';
 import { findUserByidUseCase } from '../user';
 import { findUserScriptByRelationUseCase } from '../user-script';
 import { deleteUserScriptUseCase } from '../user-script';
-import { createScriptHistoriesUseCase } from '../script-histories';
+import { createScriptHistoriesUseCase, findScriptHistoriesActionByRelationUseCase } from '../script-histories';
 import { ForbiddenException } from '../../domain/exceptions/forbidden';
-
-type ChangeScriptStatusDTO = {
-  script_id: string;
-  user_id: string;
-  status: string;
-  observation?: string;
-};
+import type { ChangeScriptStatusBody, UserData } from '../../types/index.ts';
 
 export class ChangeScriptStatusUseCase {
   constructor(private readonly scriptRepository: ScriptRepository) {}
 
-  async execute({ script_id, user_id, status, observation }: ChangeScriptStatusDTO) {
-    const foundUser = await findUserByidUseCase.execute(user_id);
-    const foundScript = await findScriptByIdUseCase.execute(script_id);
-    const foundUseScript = await findUserScriptByRelationUseCase.execute(foundUser!.id, foundScript!.id);
+  async execute({ script_id, user_id, status, observation }: ChangeScriptStatusBody) {
+    const user = await findUserByidUseCase.execute(user_id);
+    const script = await findScriptByIdUseCase.execute(script_id);
+    const user_script = await findUserScriptByRelationUseCase.execute(user!.id, script!.id);
 
-    if (!this.validateRole(foundUser!.role, status as ScriptStatus))
-      throw new ForbiddenException('User role is not allowed to assume this script status');
+    await this.validate(user!, script!, status);
 
-    if (
-      !this.validateNewStatusExists(status as ScriptStatus) ||
-      !this.validateNextStatus(foundScript!.status, status as ScriptStatus)
-    )
-      foundScript!.status = ScriptStatus.ERROR;
+    this.resolveScriptStatus(script!, status as ScriptStatus);
 
-    console.log(foundScript!);
-
-    this.resolveScriptStatus(foundScript!, status as ScriptStatus);
-
-    console.log(foundScript!);
-
-    await this.deleteUserScript(foundUseScript!.id);
-    await this.updateScriptStatus(foundScript!);
-    await this.createHistoric(foundUser!, foundScript!, observation || '');
+    await this.deleteUserScript(user_script!.id);
+    await this.updateScriptStatus(script!);
+    await this.createHistoric(user!, script!, observation || '', status as ScriptStatus);
 
     return;
   }
 
-  private validateRole(role: string, newStatus: ScriptStatus): boolean {
-    console.log(role, newStatus);
-    console.log(newStatus === ScriptStatus.AWAITING_REVIEW || newStatus === ScriptStatus.REJECTED);
+  private async validate(user: UserData, script: Script, new_status: string): Promise<void> {
+    const statusToVerifyIsAlreadyVoted = new_status === ScriptStatus.APPROVED || new_status === ScriptStatus.REJECTED;
 
+    if (!this.validateRole(user.role, new_status as ScriptStatus))
+      throw new ForbiddenException('User role is not allowed to assume this script status');
+
+    if (
+      !this.validateStatusExists(new_status as ScriptStatus) ||
+      !this.validateStatus(script.status, new_status as ScriptStatus)
+    )
+      script.status = ScriptStatus.ERROR;
+
+    if (statusToVerifyIsAlreadyVoted) await this.verifyUserAlreadyApproved(script.id, user.id);
+  }
+
+  private validateRole(role: string, newStatus: ScriptStatus): boolean {
     switch (role) {
       case 'ANALYST':
         return newStatus === ScriptStatus.AWAITING_REVIEW || newStatus === ScriptStatus.REJECTED;
@@ -62,25 +56,25 @@ export class ChangeScriptStatusUseCase {
     }
   }
 
-  private validateNewStatusExists(newStatus: ScriptStatus): boolean {
-    return Object.values(ScriptStatus).includes(newStatus);
+  private validateStatusExists(new_status: ScriptStatus): boolean {
+    return Object.values(ScriptStatus).includes(new_status);
   }
 
-  private validateNextStatus(currentStatus: ScriptStatus, newStatus: ScriptStatus): boolean {
-    switch (currentStatus) {
+  private validateStatus(current_status: ScriptStatus, new_status: ScriptStatus): boolean {
+    switch (current_status) {
       case ScriptStatus.IN_ANALYSIS:
-        return newStatus === ScriptStatus.AWAITING_REVIEW || newStatus === ScriptStatus.REJECTED;
+        return new_status === ScriptStatus.AWAITING_REVIEW || new_status === ScriptStatus.REJECTED;
       case ScriptStatus.IN_REVIEW:
-        return newStatus === ScriptStatus.AWAITING_APPROVAL || newStatus === ScriptStatus.REJECTED;
+        return new_status === ScriptStatus.AWAITING_APPROVAL || new_status === ScriptStatus.REJECTED;
       case ScriptStatus.IN_APPROVAL:
-        return newStatus === ScriptStatus.APPROVED || newStatus === ScriptStatus.REJECTED;
+        return new_status === ScriptStatus.APPROVED || new_status === ScriptStatus.REJECTED;
       default:
         return false;
     }
   }
 
-  private async deleteUserScript(UserScriptId: string): Promise<void> {
-    await deleteUserScriptUseCase.execute(UserScriptId);
+  private async deleteUserScript(user_script_id: string): Promise<void> {
+    await deleteUserScriptUseCase.execute(user_script_id);
   }
 
   private async updateScriptStatus(script: Script): Promise<void> {
@@ -99,8 +93,16 @@ export class ChangeScriptStatusUseCase {
     await this.scriptRepository.update(script);
   }
 
-  private async createHistoric(user: UserData, script: Script, observation: string): Promise<void> {
-    const action = `Script has changed to ${script.status}`;
+  private async createHistoric(
+    user: UserData,
+    script: Script,
+    observation: string,
+    request_status: ScriptStatus
+  ): Promise<void> {
+    let action = `Script has changed to ${script.status}`;
+
+    if (request_status === ScriptStatus.APPROVED && request_status !== script.status)
+      action = `${user.name} has ${ScriptStatus.VOTED} `;
 
     await createScriptHistoriesUseCase.execute({
       script_id: script.id,
@@ -110,18 +112,28 @@ export class ChangeScriptStatusUseCase {
     });
   }
 
-  private resolveScriptStatus(script: Script, newStatus: ScriptStatus) {
+  private resolveScriptStatus(script: Script, new_status: ScriptStatus) {
     script.is_assumed = false;
 
-    if (newStatus !== ScriptStatus.APPROVED) {
-      script.status = newStatus;
+    if (new_status !== ScriptStatus.APPROVED) {
+      script.status = new_status;
       return;
     }
 
-    script.approver_count += 1;
+    if (script.approver_count + 1 === 3) {
+      script.status = ScriptStatus.APPROVED;
+      return;
+    }
 
-    if (script.approver_count === 3) script.status = ScriptStatus.APPROVED;
-
+    script.approver_count++;
     script.status = ScriptStatus.AWAITING_APPROVAL;
+  }
+
+  private async verifyUserAlreadyApproved(script_id: string, user_id: string) {
+    const histories = await findScriptHistoriesActionByRelationUseCase.execute(script_id, user_id, ScriptStatus.VOTED);
+
+    if (histories.length > 0) throw new ForbiddenException('User already approved this script');
+
+    return;
   }
 }

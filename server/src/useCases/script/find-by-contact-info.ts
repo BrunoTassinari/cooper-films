@@ -2,7 +2,7 @@ import { BadRequestException } from '../../domain/exceptions/bad-request';
 import { NotFoundException } from '../../domain/exceptions/not-found';
 import type { ScriptRepository } from '../../domain/repositories/script-repository';
 import { formatScriptData } from '../../lib/format-script-data';
-import type { ScriptData } from '../../types/user';
+import type { ScriptData } from '../../types/index.ts';
 
 export class FindScriptByContactInfoUseCase {
   constructor(private repository: ScriptRepository) {}

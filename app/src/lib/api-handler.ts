@@ -13,8 +13,10 @@ export const apiHandler = async (apiCall: () => Promise<Response | null>) => {
       window.location.reload();
     }
 
-    toast.error(`${error.code} - ${error.message}`);
+    throw new Error(`${error.code} - ${error.message}`);
   }
 
-  return await response?.json();
+  if (response.status === 204) return null;
+
+  return response.json();
 };

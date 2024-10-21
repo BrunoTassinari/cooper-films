@@ -60,18 +60,7 @@ export class ScriptPrismaRepository implements ScriptRepository {
     );
   }
 
-  async assume(id: string): Promise<void> {
-    await this.prisma.script.update({
-      where: {
-        id,
-      },
-      data: {
-        is_assumed: true,
-      },
-    });
-  }
-
-  async findOne(id: string): Promise<Script | null> {
+  async findById(id: string): Promise<Script | null> {
     const response = await this.prisma.script.findUnique({
       where: {
         id,
