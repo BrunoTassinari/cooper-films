@@ -1,15 +1,33 @@
 "use client";
 
 import FindScriptForm from "@/components/find-script";
-import type { Script } from "@/types/script";
-import { useEffect, useState } from "react";
+import type { ColumnDef } from "@tanstack/react-table";
+import { useState } from "react";
+import type { ListScript } from "../list/page";
+import { DataTable } from "@/components/data-table";
+
+const columns: ColumnDef<ListScript>[] = [
+  {
+    accessorKey: "title",
+    header: "Titulo",
+  },
+  {
+    accessorKey: "contact_name",
+    header: "Enviado por",
+  },
+  {
+    accessorKey: "created_at",
+    header: "Data criação",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+  },
+];
 
 export default function FindScripts() {
-  const [scripts, setScripts] = useState<Script[]>([]);
-
-  useEffect(() => {
-    console.log(scripts);
-  }, [scripts]);
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const [scripts, setScripts] = useState<any[]>([]);
 
   return (
     <div className="flex flex-col gap-4 items-center">
@@ -19,10 +37,8 @@ export default function FindScripts() {
       <FindScriptForm setScripts={setScripts} />
 
       {scripts.length ? (
-        <div className="flex flex-col gap-4">
-          {scripts.map((script) => (
-            <div key={script.id}>{JSON.stringify(script)}</div>
-          ))}
+        <div className="flex flex-col gap-4 w-full p-4">
+          <DataTable columns={columns} data={scripts} />
         </div>
       ) : null}
     </div>

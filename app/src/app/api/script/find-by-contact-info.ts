@@ -17,7 +17,7 @@ export const findScript = async ({
 
   if (contact_phone) query += `&contact_phone=${contact_phone}`;
 
-  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/script${query}`;
+  const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/script/by-contact-info${query}`;
 
   const response = await fetch(url, {
     method: 'GET',

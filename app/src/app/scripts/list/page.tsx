@@ -27,10 +27,6 @@ const columns: ColumnDef<ListScript>[] = [
     header: "Titulo",
   },
   {
-    accessorKey: "content",
-    header: "Conteudo",
-  },
-  {
     accessorKey: "contact_name",
     header: "Enviado por",
   },

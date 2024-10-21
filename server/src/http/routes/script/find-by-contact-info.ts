@@ -6,7 +6,7 @@ import { findScriptByContactInfoUseCase } from '../../../useCases/script';
 const router = Router();
 
 router.get(
-  '',
+  '/by-contact-info',
   tryCatch(async (req: Request, res: Response) => {
     const { contact_name, contact_email, contact_phone } = req.query;
 

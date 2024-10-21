@@ -9,9 +9,9 @@ const router = Router();
 
 router.use(changeScripStatusRoute);
 router.use(createScriptRoute);
+router.use(findByContactInfoRoute);
 router.use(listScriptsRoute);
 router.use(findScriptByIdRoute);
-router.use(findByContactInfoRoute);
 
 router.use('/script', router);
 
