@@ -29,9 +29,5 @@ export const createScript = async ({
     }),
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to create script');
-  }
-
-  return response.json();
+  return response;
 };

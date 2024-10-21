@@ -11,11 +11,11 @@ export const changeScriptStatus = async ({
   status,
   observation,
 }: ChangeStatusRequest) => {
-  const token = JSON.parse(localStorage.getItem('authToken') || '');
+  let token = localStorage.getItem('authToken');
 
-  if (!token) {
-    return null;
-  }
+  if (!token) token = '{}';
+
+  const parsedToken = JSON.parse(token);
 
   const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/script`;
 
@@ -23,7 +23,7 @@ export const changeScriptStatus = async ({
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${parsedToken}`,
     },
     body: JSON.stringify({
       script_id,
@@ -33,9 +33,5 @@ export const changeScriptStatus = async ({
     }),
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to change status');
-  }
-
-  return response.json();
+  return response;
 };

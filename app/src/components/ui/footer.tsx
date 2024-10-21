@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { FileSearch, FileCheck, FilePlus2, FileUser } from "lucide-react";
-import { Button } from "./button";
 
 export default function Footer() {
   return (

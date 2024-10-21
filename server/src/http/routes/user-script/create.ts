@@ -3,7 +3,7 @@ import type { Request, Response } from 'express';
 import z from 'zod';
 import { createUserScriptUseCase } from '../../../useCases/user-script';
 import { tryCatch } from '../../../lib/try-catch-handler';
-import { jwtGuard } from '../../../middlewares/jwt-auth';
+import { jwtGuard } from '../../../auth/jwt-auth';
 
 const CreateUserScriptSchema = z.object({
   script_id: z.string(),

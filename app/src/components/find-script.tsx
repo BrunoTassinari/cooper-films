@@ -7,8 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./ui/input";
 import ReactInputMask from "react-input-mask";
 import { Button } from "./ui/button";
-import { findScript } from "@/app/api/find-script";
+import { findScript } from "@/app/api/script/find-by-contact-info";
 import type { Script } from "@/types/script";
+import { apiHandler } from "@/lib/api-handler";
 
 type FindScriptFormProps = {
   setScripts: (scripts: Script[]) => void;
@@ -37,14 +38,9 @@ export default function FindScriptForm({ setScripts }: FindScriptFormProps) {
   });
 
   async function handleSearchScript(query: findScriptForm) {
-    try {
-      const response = await findScript(query);
-      setScripts(response);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      reset();
-    }
+    const response = await apiHandler(() => findScript(query));
+    setScripts(response);
+    reset();
   }
 
   return (

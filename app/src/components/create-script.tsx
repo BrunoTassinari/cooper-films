@@ -9,7 +9,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "./ui/input";
 import { TextArea } from "./ui/text-area";
 import ReactInputMask from "react-input-mask";
-import { createScript } from "@/app/api/create-script";
+import { createScript } from "@/app/api/script/create";
+import { toast } from "react-toastify";
+import { apiHandler } from "@/lib/api-handler";
 
 const createScriptFormSchema = z.object({
   contact_name: z.string().min(1, { message: "Nome é obrigatório" }),
@@ -28,12 +30,9 @@ export default function CreateScriptForm() {
     });
 
   async function handleCreateScript(data: createScriptForm) {
-    try {
-      await createScript(data);
-      reset();
-    } catch (error) {
-      console.error(error);
-    }
+    await apiHandler(() => createScript(data));
+    toast.success("Roteiro criado com sucesso!");
+    reset();
   }
 
   return (

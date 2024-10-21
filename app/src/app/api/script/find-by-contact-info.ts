@@ -26,9 +26,5 @@ export const findScript = async ({
     },
   });
 
-  if (!response.ok) {
-    throw new Error('Failed to find script');
-  }
-
-  return response.json();
+  return response;
 };

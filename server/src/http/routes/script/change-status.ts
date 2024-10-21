@@ -3,7 +3,7 @@ import type { Request, Response } from 'express';
 import z from 'zod';
 import { changeScriptStatusUseCase } from '../../../useCases/script';
 import { tryCatch } from '../../../lib/try-catch-handler';
-import { jwtGuard } from '../../../middlewares/jwt-auth';
+import { jwtGuard } from '../../../auth/jwt-auth';
 
 const schema = z.object({
   script_id: z.string(),
@@ -22,7 +22,7 @@ router.put(
 
     await changeScriptStatusUseCase.execute(body);
 
-    res.status(204).send();
+    res.status(204).json({});
   })
 );
 

@@ -5,8 +5,10 @@ import { DataTable } from "../../../components/data-table";
 import { useEffect, useState } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { z } from "zod";
-import { ListUserScripts } from "@/app/api/list-user-scripts";
+import { ListUserScripts } from "@/app/api/user-script/list";
 import ListRowActions from "@/components/list-row-actions";
+import { apiHandler } from "@/lib/api-handler";
+import { toast } from "react-toastify";
 
 export type ListScript = z.infer<typeof listScripSchema>;
 
@@ -56,7 +58,7 @@ export default function ListScriptPage() {
   const [data, setData] = useState<any[]>([]);
 
   const handleFetchData = async () => {
-    const response = await ListUserScripts(userId);
+    const response = await apiHandler(() => ListUserScripts(userId));
 
     setData(response);
   };
@@ -69,10 +71,6 @@ export default function ListScriptPage() {
 
     handleFetchData();
   }, [authenticated]);
-
-  if (!authenticated) {
-    return null;
-  }
 
   return (
     <div className="flex flex-col gap-4">

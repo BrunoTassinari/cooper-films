@@ -3,10 +3,12 @@
 import { useAuth } from "@/hooks/use-auth";
 import { DataTable } from "../../../components/data-table";
 import { useEffect, useState } from "react";
-import { ListScripts } from "@/app/api/list-scripts";
+import { ListScripts } from "@/app/api/script/list";
 import type { ColumnDef } from "@tanstack/react-table";
 import { z } from "zod";
 import ListRowActions from "@/components/list-row-actions";
+import { toast } from "react-toastify";
+import { apiHandler } from "@/lib/api-handler";
 
 export type ListScript = z.infer<typeof listScripSchema>;
 
@@ -54,7 +56,7 @@ export default function ListScriptPage() {
   const [data, setData] = useState<any[]>([]);
 
   const handleFetchData = async () => {
-    const response = await ListScripts();
+    const response = await apiHandler(() => ListScripts());
 
     setData(response);
   };

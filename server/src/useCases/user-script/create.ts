@@ -7,6 +7,7 @@ import type { UserData } from '../../types/user';
 import type { Script } from '../../domain/entities/script';
 import { findScriptByIdUseCase, updateScriptUseCase } from '../script';
 import { createScriptHistoriesUseCase } from '../script-histories';
+import { ForbiddenException } from '../../domain/exceptions/forbidden';
 
 type CreateUserScriptBody = {
   script_id: string;
@@ -23,7 +24,7 @@ export class CreateUserScriptUseCase {
     if (foundScript!.is_assumed) throw new Error('Script is already assumed');
 
     if (!this.validateRole(foundUser!.role, foundScript!.status))
-      throw new Error('User role is not allowed to assume this script status');
+      throw new ForbiddenException('User role is not allowed to assume this script status');
 
     const userScript = new UserScript(user_id, script_id);
 

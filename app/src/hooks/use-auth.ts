@@ -3,6 +3,7 @@
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 
 type jwtDecoded = {
   validUser: {
@@ -23,6 +24,8 @@ export const useAuth = () => {
     const token = localStorage.getItem('authToken');
 
     if (!token) {
+      toast.clearWaitingQueue();
+      toast.error('Faça login para acessar a página');
       router.push('/login');
     } else {
       const decodedToken = jwtDecode<jwtDecoded>(token);

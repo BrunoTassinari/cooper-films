@@ -10,6 +10,21 @@ export class ScriptPrismaRepository implements ScriptRepository {
     this.prisma = new PrismaClient();
   }
 
+  async findByTitle(title: string): Promise<Script | null> {
+    const response = await this.prisma.script.findFirst({
+      where: {
+        title,
+      },
+    });
+
+    if (!response) return null;
+
+    return {
+      ...response,
+      status: response.status as ScriptStatus,
+    };
+  }
+
   async update(script: Script): Promise<Script> {
     const response = await this.prisma.script.update({
       where: {

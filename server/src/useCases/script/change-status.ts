@@ -7,6 +7,7 @@ import { findUserByidUseCase } from '../user';
 import { findUserScriptByRelationUseCase } from '../user-script';
 import { deleteUserScriptUseCase } from '../user-script';
 import { createScriptHistoriesUseCase } from '../script-histories';
+import { ForbiddenException } from '../../domain/exceptions/forbidden';
 
 type ChangeScriptStatusDTO = {
   script_id: string;
@@ -24,7 +25,7 @@ export class ChangeScriptStatusUseCase {
     const foundUseScript = await findUserScriptByRelationUseCase.execute(foundUser!.id, foundScript!.id);
 
     if (!this.validateRole(foundUser!.role, status as ScriptStatus))
-      throw new Error('User role is not allowed to assume this script status');
+      throw new ForbiddenException('User role is not allowed to assume this script status');
 
     if (
       !this.validateNewStatusExists(status as ScriptStatus) ||

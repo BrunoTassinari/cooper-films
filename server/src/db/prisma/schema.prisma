@@ -27,7 +27,7 @@ model User {
 
 model Script {
   id             String   @id @default(cuid())
-  title          String
+  title          String   @unique
   content        String
   status         String
   is_assumed     Boolean  @default(false)

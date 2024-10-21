@@ -1,3 +1,4 @@
+import { NotFoundException } from '../../domain/exceptions/not-found';
 import type { UserRepository } from '../../domain/repositories/user-repository';
 import type { UserData } from '../../types/user';
 
@@ -7,9 +8,7 @@ export class FindUserByIdUseCase {
   async execute(id: string): Promise<UserData | null> {
     const user = await this.userRepository.findById(id);
 
-    if (!user) {
-      throw new Error('User not found');
-    }
+    if (!user) throw new NotFoundException('User not found');
 
     return {
       id: user.id,

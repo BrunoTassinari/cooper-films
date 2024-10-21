@@ -17,14 +17,16 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { useAuth } from "@/hooks/use-auth";
-import { createUserScript } from "@/app/api/create-user-script";
+import { createUserScript } from "@/app/api/user-script/create";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import DetailsModal from "./details-modal";
 import ObservationModal from "./observation-modal";
 import { changeScriptStatus } from "@/app/api/script/change-status";
+import { apiHandler } from "@/lib/api-handler";
 
 type ListRowActionsProps = {
   script: any;
@@ -45,37 +47,29 @@ export default function ListRowActions({
   const router = useRouter();
 
   async function handleUpdateStatus() {
-    const response = await changeScriptStatus({
-      script_id: script.id,
-      user_id: userId,
-      status,
-      observation,
-    });
+    await apiHandler(() =>
+      changeScriptStatus({
+        script_id: script.id,
+        user_id: userId,
+        status,
+        observation,
+      })
+    );
 
-    if (response) {
-      toast.success("Status atualizado com sucesso! Redirecionando...");
-    }
-
-    setInterval(() => {
-      router.push("/scripts/list");
-    }, 1000);
+    toast.success("Status atualizado com sucesso!");
   }
 
   async function handleAssumeScript() {
-    try {
-      await createUserScript({
+    await apiHandler(() =>
+      createUserScript({
         user_id: userId,
         script_id: script.id,
         role,
-      });
+      })
+    );
 
-      toast.success("Script assumido com sucesso! Redirecionando...");
-    } catch (error) {
-    } finally {
-      setInterval(() => {
-        window.location.reload();
-      }, 1000);
-    }
+    toast.success("Roteiro assumido com sucesso!");
+    router.push("/scripts/list");
   }
 
   return (

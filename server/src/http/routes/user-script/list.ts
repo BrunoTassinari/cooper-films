@@ -2,7 +2,7 @@ import { Router } from 'express';
 import type { Request, Response } from 'express';
 import { tryCatch } from '../../../lib/try-catch-handler';
 import { listUserScriptsUseCase } from '../../../useCases/user-script';
-import { jwtGuard } from '../../../middlewares/jwt-auth';
+import { jwtGuard } from '../../../auth/jwt-auth';
 
 const router = Router();
 
