@@ -5,7 +5,6 @@ import { DataTable } from "../../../components/data-table";
 import { useEffect, useState } from "react";
 import { ListScripts } from "@/app/api/script/list";
 import type { ColumnDef } from "@tanstack/react-table";
-import { z } from "zod";
 import ListRowActions from "@/components/list-row-actions";
 import { toast } from "react-toastify";
 import { apiHandler } from "@/lib/api-handler";

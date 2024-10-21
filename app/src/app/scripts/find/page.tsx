@@ -3,10 +3,10 @@
 import FindScriptForm from "@/components/find-script";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useState } from "react";
-import type { ListScript } from "../list/page";
 import { DataTable } from "@/components/data-table";
+import type { ScriptData } from "@/types/index.ts";
 
-const columns: ColumnDef<ListScript>[] = [
+const columns: ColumnDef<ScriptData>[] = [
   {
     accessorKey: "title",
     header: "Titulo",
@@ -30,8 +30,7 @@ const columns: ColumnDef<ListScript>[] = [
 ];
 
 export default function FindScripts() {
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const [scripts, setScripts] = useState<any[]>([]);
+  const [scripts, setScripts] = useState<ScriptData[]>([]);
 
   return (
     <div className="flex flex-col gap-4 items-center">

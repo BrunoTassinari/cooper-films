@@ -11,6 +11,7 @@ export function translateStatus(status: ScriptStatus): string {
     [ScriptStatus.APPROVED]: 'Aprovado',
     [ScriptStatus.REJECTED]: 'Rejeitado',
     [ScriptStatus.ERROR]: 'Erro',
+    [ScriptStatus.VOTED]: 'Votado',
   };
 
   return translate[status];
